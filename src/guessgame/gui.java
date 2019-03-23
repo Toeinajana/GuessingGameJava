@@ -34,10 +34,14 @@ public class gui extends javax.swing.JFrame implements CExam {
     int answer;
     String input;
     Random ranNum = new Random(); // random number
+  
     int w =0,l= 0;
+    
+    
     int count = 0;
     
     public gui() {
+        
         
      answer = setNumber();
         initComponents(); 
@@ -50,16 +54,22 @@ public class gui extends javax.swing.JFrame implements CExam {
           
     public int getWin()
         { 
-         w++; // count win
+            
+            
+         w = w++; // count win
       
   
-         return w;   
+         return w++;  
+         
         }
+    
      public int getLose()
      { 
-            l++; // count lose
+         
+         l = l++;
+            //++l; // count lose
     
-         return l;  
+         return l++;  
      }
      
      public int getCorrectNumber()
@@ -107,7 +117,7 @@ public class gui extends javax.swing.JFrame implements CExam {
      public void showlost()// show lost number
      {
           String lost;
-            lost = String.valueOf(getWin());
+            lost = String.valueOf(getLose());
                 
           showLost.setText(lost);
           showLost.setForeground(Color.RED);
@@ -115,44 +125,68 @@ public class gui extends javax.swing.JFrame implements CExam {
      }
       public void welcome() // show message welcome
      {
-         String welcome = "Welcome to guess game." +br+
+         String welcome = "Welcome to guessing game." +br+
                              "Start guessing number";
           display.setText(welcome);
           display.setForeground(Color.PINK);
      }
+      
+      public void reset()
+              
+      {
+          count = 0;
+          w = 0;
+        l = 0;
+        showwin();
+        showlost();
+        welcome();
+        
+      }
      
      public void startGame(String input)  // main game
      {
+        
+         
+         
          
          int _input = Integer.parseInt(input);
          
          if(_input == answer)
          {
              showCorrect();
-             getWin(); //if win
-             //w++;
+             
+             showwin();
+            
+            guess.setEnabled(false);
+            newgame.setEnabled(true);
+             
          }
          else if(_input>answer)
          {
              showlower(); // if lower
-             getLose();
+             
+             showlost();
          }
          else if(_input<answer)
          {
              showhigher();
-             getLose(); // if higher
+             
+             showlost();
          }
          
-         if(count >= 4 && _input != answer)
+         if(count >= 2 && _input != answer)
          {
              String showwrong = "You lost !!"; // can play 5 times
           display.setText(showwrong);
           display.setForeground(Color.RED);
           guess.setEnabled(false);
+          newgame.setEnabled(true);
           
          }
          count++; // count 5 time ++
+         
          }
+     
     
             
      
@@ -203,6 +237,12 @@ public class gui extends javax.swing.JFrame implements CExam {
         });
 
         jLabel1.setText("L:");
+
+        showLost.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showLostActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -258,11 +298,28 @@ public class gui extends javax.swing.JFrame implements CExam {
 
     private void newgameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newgameActionPerformed
         // TODO add your handling code here:
+        
+        reset();
+        
+        guess.setEnabled(true);
+        newgame.setEnabled(false);
+        
+        input = JOptionPane.showInputDialog("Please enter your number: ");
+        startGame(input);
+        
+        
     }//GEN-LAST:event_newgameActionPerformed
 
     private void showWinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showWinActionPerformed
         // TODO add your handling code here:
+        
+        //showwin();
     }//GEN-LAST:event_showWinActionPerformed
+
+    private void showLostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showLostActionPerformed
+        // TODO add your handling code here:
+        //showlost();
+    }//GEN-LAST:event_showLostActionPerformed
 
     /**
      * @param args the command line arguments
